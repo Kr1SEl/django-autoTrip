@@ -1,0 +1,124 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Catamaran:wght@900&display=swap');
+
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:visited {
+  background-color: #4badef !important;
+  border: 1px #4badef !important;
+}
+
+body {
+  margin: 0;
+  background: #f9f9f9;
+  font-family: 'Ubuntu', sans-serif;
+  font-style: normal;
+  color: #1c4651 !important;
+}
+
+.btn-secondary,
+.btn-secondary:hover,
+.btn-secondary:active,
+.btn-secondary:visited {
+  background-color: #8064A2 !important;
+  border: 1px #8064A2 !important;
+}
+
+.btn-danger,
+.btn-danger:hover,
+.btn-danger:active,
+.btn-danger:visited {
+  background-color: #e24f5f !important;
+  border: 1px #e24f5f !important;
+}
+
+.btn-success,
+.btn-success:hover,
+.btn-success:active,
+.btn-success:visited {
+  background-color: #61af1d !important;
+  border: 1px #61af1d !important;
+}
+
+.btn-dark,
+.btn-dark:hover,
+.btn-dark:active,
+.btn-dark:visited {
+  background-color: #ffb800 !important;
+  border: 1px #ffb800 !important;
+}
+
+.pagination ul {
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+}
+
+.pagination li {
+  display: inline;
+}
+
+.pagination li a {
+  color: #1c4651;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+}
+
+.pagination li.active a {
+  background-color: red;
+  color: white;
+}
+
+.pagination li:hover:not(.active) a {
+  background-color: #ddd;
+}
+
+.fix {
+  position: fixed;
+  bottom: -20px;
+  left: 0%;
+  width: 100%;
+}
+
+.back {
+  z-index: -3;
+  background-repeat: no-repeat;
+  top:50px;
+  position: fixed;
+  width: 100%;
+}
+
+.container{
+  margin: 20px 0;
+}
+
+.container.cyber-text {
+  box-sizing: border-box;
+  position: relative;
+  text-transform: uppercase;
+  font-size: 110px;
+  font-family: 'Catamaran', sans-serif;
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.container.cyber-text::before {
+  box-sizing: border-box;
+  position: absolute;
+  content: 'bla bla trip';
+  color: rgba(73, 167, 255, 0.8) !important;
+  top: 5px;
+  left: 298px;
+}
+
+.container.cyber-text::after {
+  text-align: center;
+  box-sizing: border-box;
+  z-index: -1;
+  position: absolute;
+  content: 'bla bla trip';
+  color: rgba(255, 56, 56, 0.8) !important;
+  top: -5px;
+  left: 300px;
+}

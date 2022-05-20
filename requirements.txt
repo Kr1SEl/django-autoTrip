@@ -6,6 +6,7 @@ DateTime==4.4
 Django==4.0.4
 django-bootstrap-datepicker-plus==4.0.0
 django-bootstrap-form==3.4
+django-bootstrap3==21.2
 django-bootstrap4==22.1
 django-filter==21.1
 Pillow==9.1.0

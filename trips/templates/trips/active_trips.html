@@ -1,0 +1,87 @@
+{% extends 'trips/base.html' %} 
+{% load bootstrap3 %}
+{% load trips_extras %}
+{% block content %}
+<div class="container">
+    <center>
+        <h1>Active Trips</h1>
+    </center>
+    <div class = "row">
+        <div class = "column">
+            {% if showFilter != True %}
+            <form action="" method="GET">
+                {% csrf_token %}
+                <button name="showFilter" value="Filter" class="btn btn-secondary">Filter</button>
+            </form>
+            {% endif %}
+            {% if showFilter %}
+                <form method = "GET" id="add-trip-form" enctype="multipart/form-data" ddl-cities = "{% url 'load-ddl-cities' %}" class="form form-horizontal">
+                    {% bootstrap_javascript jquery='full' %}
+                    {% bootstrap_form filter.form %}
+                    {{filter.form.media}}
+                    <br>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <button name="showFilter" class = "btn btn-secondary" type="submit" value="Filter">Search</button>
+                    </div>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+    <hr align="center" width="auto" size="5" color="#ff0000" />
+    <br/>
+    {% for trip in tripsForPage %}
+        <div class="card">
+        <h5 class="card-header">From <b>{{trip.start_city}}</b> To <b>{{trip.end_city}}</b></h5>
+            <div class="card-body">
+                <h5 class="card-title">Departure time: <b>{{trip.start_date_and_time}}</b></h5>
+                <p class="card-text">Places left: {{trip.freePlaces}} <br>{{trip.driver}}</p>
+                <a href="{% url 'trip-details' trip.id %}" class="btn btn-primary">View details</a>
+            </div>
+        </div>
+        <br><br>
+    {% endfor %} 
+    <br/><br/>
+    <nav>
+        <ul class="pagination justify-content-center">
+        {% if tripsForPage.has_previous%}
+            <li class="page-item"><a class="page-link" href="{% trip_filter_url 1 'page' request.GET.urlencode %}">&laquo First</a></li>
+            <li class="page-item"><a class="page-link" href="{% trip_filter_url tripsForPage.previous_page_number 'page' request.GET.urlencode %}">Previous</a></li>
+        {% endif %} 
+            <li class="page-item disabled"><a class="page-link" href="#">Page {{tripsForPage.number}} of {{tripsForPage.paginator.num_pages}}</a></li>
+        {% if tripsForPage.has_next %}
+            <li class="page-item"><a class="page-link" href="{% trip_filter_url tripsForPage.next_page_number 'page' request.GET.urlencode %}">Next</a></li>
+            <li class="page-item"><a class="page-link"  href="{% trip_filter_url tripsForPage.paginator.num_pages 'page' request.GET.urlencode %}">Last &raquo</a></li>
+        {% endif %}
+        </ul>
+    </nav>
+            <script>
+                $("#id_start_country").change(function () {
+                    const url = $("#add-trip-form").attr("ddl-cities");
+                    const countryId = $(this).val(); 
+                    $.ajax({                       
+                        url: url,
+                        data: {
+                            'country_id': countryId     
+                        },
+                        success: function (data) {  
+                            $("#id_start_city").html(data); 
+                        }
+                    });
+                });
+                $("#id_end_country").change(function () {
+                    const url = $("#add-trip-form").attr("ddl-cities");
+                    const countryId = $(this).val(); 
+                    $.ajax({                       
+                        url: url,
+                        data: {
+                            'country_id': countryId     
+                        },
+                        success: function (data) {  
+                            $("#id_end_city").html(data); 
+                        }
+                    });
+                });
+            </script>
+<br/><br/>
+</div>
+{% endblock %}
