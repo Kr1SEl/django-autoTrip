@@ -13,7 +13,7 @@
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Trip from {{trip.start_city}} to {{trip.end_city}}</h5>
-                    <p class="card-text">Departure time: {{trip.start_date_and_time}}</p>
+                    <p class="card-text">Departure time: <strong>{{trip.start_date_and_time}}</strong></p>
                     <a href="{% url 'free-place' trip.id %}" class="btn btn-dark">Free place</a>
                     <a href="{% url 'trip-details' trip.id %}" class="btn btn-primary">View Details</a>
                 </div> 

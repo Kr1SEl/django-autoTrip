@@ -68,7 +68,8 @@ def trip_free_place(request, trip_id):
                     request, ('You are not holding place in this trip'))
                 return redirect('my-trips')
             elif len(trip.passengers.all().filter(user=request.user)) == 1:
-                trip.passengers.remove(trip.passengers.all()[0])
+                trip.passengers.remove(
+                    trip.passengers.all().filter(user=request.user)[0])
                 messages.success(request, ("Place was succesfully freed"))
                 return redirect('my-trips')
             else:
@@ -109,6 +110,7 @@ def trip_details(request, trip_id):
     if request.method == 'POST':
         if request.user.is_authenticated:
             trip = Trip.objects.get(pk=trip_id)
+            print(trip)
             activePassengers = trip.passengers.all()
             userPassengers = Passenger.objects.filter(
                 user=request.user)
@@ -135,6 +137,7 @@ def trip_details(request, trip_id):
             return redirect('login')
     else:
         trip = Trip.objects.get(pk=trip_id)
+        print(trip.passengers.all())
         activePassengers = trip.passengers.all()
         return render(request, 'trips/trip_details.html', {'trip': trip, 'passengers': activePassengers})
 
