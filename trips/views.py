@@ -64,6 +64,7 @@ def trip_free_place(request, trip_id):
         if request.method == "POST":
             if request.POST.get('deleteUserPassenger'):
                 trip.passengers.remove(request.POST.get('deleteUserPassenger'))
+                trip.freePlaces = trip.freePlaces+1
                 trip.save()
                 messages.success(request, ("Place was succesfully freed"))
                 return redirect('my-trips')
@@ -75,6 +76,8 @@ def trip_free_place(request, trip_id):
             elif len(trip.passengers.all().filter(user=request.user)) == 1:
                 trip.passengers.remove(
                     trip.passengers.all().filter(user=request.user)[0])
+                trip.freePlaces = trip.freePlaces+1
+                trip.save()
                 messages.success(request, ("Place was succesfully freed"))
                 return redirect('my-trips')
             else:
