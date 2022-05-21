@@ -26,7 +26,7 @@
                 {{ form.as_p }}
                 {{ form.media }}
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                <a class="btn btn-secondary" href="{% url 'add-driver' %}">Add A Driver</a>
+                <a class="btn btn-secondary" href="{% url 'add-driver' -1%}">Add A Driver</a>
                 <input type="submit", value="Submit", class="btn btn-primary">
                 </div>
             </form>

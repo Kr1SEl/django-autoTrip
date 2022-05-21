@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.db.models import F
 from django.http import HttpResponse, HttpResponseRedirect
 from django.utils import timezone
 from django.core.paginator import Paginator
@@ -15,13 +16,17 @@ def add_trip(request):
     if len(userDriver) == 0:
         messages.success(
             request, ('You are having no registered drivers currently. Add one to proceed'))
-        return redirect('add-driver')
+        return redirect('add-driver', -1)
     if request.user.is_authenticated:
         if request.method == 'POST':
             form = TripForm(request.user, request.POST)
             if form.is_valid():
                 form.save()
-                return redirect('trip-details', form.save().pk)
+                tripPK = form.save().pk
+                trip = Trip.objects.get(pk=tripPK)
+                trip.places_left = trip.num_of_places
+                trip.save()
+                return redirect('trip-details', tripPK)
         else:
             form = TripForm(request.user)
         return render(request, 'trips/add_trip.html', {'form': form})
@@ -110,13 +115,14 @@ def trip_details(request, trip_id):
     if request.method == 'POST':
         if request.user.is_authenticated:
             trip = Trip.objects.get(pk=trip_id)
-            print(trip)
             activePassengers = trip.passengers.all()
             userPassengers = Passenger.objects.filter(
                 user=request.user)
             userPassengers = userPassengers.exclude(id__in=activePassengers)
             if request.POST.get('userPassenger'):
                 trip.passengers.add(request.POST.get('userPassenger'))
+                trip = Trip.objects.get(pk=trip_id)
+                trip.places_left = trip.places_left - 1
                 trip.save()
                 messages.success(request, ("Passeger succesfully added"))
                 return render(request, 'trips/trip_details.html', {'trip': trip, 'passengers': activePassengers})
@@ -137,14 +143,13 @@ def trip_details(request, trip_id):
             return redirect('login')
     else:
         trip = Trip.objects.get(pk=trip_id)
-        print(trip.passengers.all())
         activePassengers = trip.passengers.all()
         return render(request, 'trips/trip_details.html', {'trip': trip, 'passengers': activePassengers})
 
 
 def active_trips(request):
     trips = Trip.objects.filter(
-        start_date_and_time__gte=timezone.now()).order_by('start_date_and_time')
+        start_date_and_time__gte=timezone.now(), places_left__gt=0).order_by('start_date_and_time')
     tripFilter = TripFilter(request.GET, queryset=trips)
     trips = tripFilter.qs
     paginator = Paginator(trips, 2)
@@ -158,14 +163,20 @@ def active_trips(request):
 def update_trip(request, trip_id):
     if request.user.is_authenticated:
         trip = Trip.objects.get(pk=trip_id)
-        if request.method == 'POST':
-            form = UpdateTripForm(request.user, request.POST, instance=trip)
-            if form.is_valid():
-                form.save()
-                return redirect('trip-details', trip_id)
+        if trip.driver.user == request.user:
+            if request.method == 'POST':
+                form = UpdateTripForm(
+                    request.user, request.POST, instance=trip)
+                if form.is_valid():
+                    form.save()
+                    return redirect('trip-details', trip_id)
+            else:
+                form = UpdateTripForm(request.user, instance=trip)
+            return render(request, 'trips/update_trip.html', {'trip': trip, 'form': form})
         else:
-            form = UpdateTripForm(request.user, instance=trip)
-        return render(request, 'trips/update_trip.html', {'trip': trip, 'form': form})
+            messages.success(
+                request, ('This trip does not belong to you!'))
+            return redirect('my-trips')
     else:
         messages.success(
             request, ('You must be authorized to update a trip'))

@@ -30,6 +30,7 @@ class City(models.Model):
 class Trip(models.Model):
     num_of_places = models.PositiveIntegerField()
     start_date_and_time = models.DateTimeField()
+    places_left = models.IntegerField(blank=True, null=True)
     description = models.TextField(blank=True)
     passengers = models.ManyToManyField(Passenger, blank=True)
     start_country = models.ForeignKey(

@@ -44,7 +44,7 @@ def register_user(request):
     return render(request, 'auth/register.html', {'form': form, })
 
 
-def add_driver(request):
+def add_driver(request, trip_id):
     if request.user.is_authenticated:
         if request.method == "POST":
             form = DriverCreationForm(request.POST)
@@ -55,10 +55,13 @@ def add_driver(request):
                 driver.user = request.user
                 driver.save()
                 messages.success(request, ('Driver was added successfully.'))
-                return redirect('add-trip')
+                if trip_id == -1:
+                    return redirect('add-trip')
+                else:
+                    return redirect('update-trip', trip_id)
         else:
             form = DriverCreationForm
-        return render(request, 'auth/add_driver.html', {'form': form})
+        return render(request, 'auth/add_driver.html', {'form': form, 'trip_id': trip_id})
     else:
         messages.success(
             request, ('You must be authorized to add a driver'))
@@ -77,6 +80,7 @@ def add_passenger(request, trip_id):
                 passenger.save()
                 trip = Trip.objects.get(pk=trip_id)
                 trip.passengers.add(passenger)
+                trip.places_left = trip.places_left - 1
                 trip.save()
                 messages.success(
                     request, ('Passenger was added successfully.'))

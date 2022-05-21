@@ -15,8 +15,9 @@
             </div>
         </div>
     {% endif %}
+    <div class="shadow p-4 mb-5 bg-body rounded">
     <center>
-        <h1>Update trip to <b>{{trip.end_city}}<b></h1>
+        <h1>Update trip to <b>{{trip.end_city}}</b></h1>
     </center>
     <br>
     <form action="" method="POST">
@@ -25,9 +26,10 @@
         {{ form.as_p }}
         {{ form.media }}
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-        <a class="btn btn-secondary" href="{% url 'add-driver' %}">Add A Driver</a>
+        <a class="btn btn-secondary" href="{% url 'add-driver' trip.id%}">Add A Driver</a>
         <input type="submit", value="Submit", class="btn btn-primary">
         </div>
     </form>
+    </div>
 </div>
 {% endblock %} 

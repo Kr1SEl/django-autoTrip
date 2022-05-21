@@ -19,7 +19,7 @@
         <h1>Register Driver</h1>
     </center>
     <br/>
-        <form action="{% url 'add-driver' %}" method="POST">
+        <form action="{% url 'add-driver' trip_id%}" method="POST">
             {% csrf_token %}
             {{ form.as_p }} 
             <br/>

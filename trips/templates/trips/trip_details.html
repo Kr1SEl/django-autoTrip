@@ -46,7 +46,11 @@
         <p style="font-size: 20px;">Places left: {{trip.freePlaces}}</p>
         <ol>
         {% for passenger in passengers %}
-            <li style="font-size: 18px;">{{passenger}}</li>
+            {% if passenger.user == user %}
+                <li style="font-size: 18px;"><b>{{passenger}}</b></li>
+            {% else %}
+                <li style="font-size: 18px;">{{passenger}}</li>
+            {% endif %}
         {% endfor %}
         </ol>
         <form method="POST">
