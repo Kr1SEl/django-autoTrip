@@ -34,7 +34,7 @@
         <h5 class="card-header">From <b>{{trip.start_city}}</b> To <b>{{trip.end_city}}</b></h5>
             <div class="card-body">
                 <h5 class="card-title">Departure time: <b>{{trip.start_date_and_time}}</b></h5>
-                <p class="card-text">Places left: {{trip.freePlaces}} <br>{{trip.driver}}</p>
+                <p class="card-text">Places left: {{trip.places_left}} <br>{{trip.driver}}</p>
                 <a href="{% url 'trip-details' trip.id %}" class="btn btn-primary">View details</a>
             </div>
         </div>

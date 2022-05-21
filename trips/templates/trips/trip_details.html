@@ -43,7 +43,7 @@
     </div>
     <hr align="center" width="auto" size="7" color="#ededed" />
     <div class="container" style="width:95%; margin: auto;">
-        <p style="font-size: 20px;">Places left: {{trip.freePlaces}}</p>
+        <p style="font-size: 20px;">Places left: {{trip.places_left}}</p>
         <ol>
         {% for passenger in passengers %}
             {% if passenger.user == user %}
@@ -82,7 +82,7 @@
                 </div>
             {% endif %}
             {% if deleteUserPassanger != True %}
-                {% if trip.freePlaces <= 0 %}
+                {% if trip.places_left <= 0 %}
                     <input type="submit" class="btn btn-success" value="Book place" style="width:100%" disabled>
                 {% elif trip.isActive%}
                     <input type="submit" class="btn btn-success" value="Book place" style="width:100%" disabled>

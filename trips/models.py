@@ -47,13 +47,9 @@ class Trip(models.Model):
     def hasDescription(self):
         return self.description != ''
 
-    @ property
+    @property
     def isActive(self):
         return timezone.now() > self.start_date_and_time
-
-    @ property
-    def freePlaces(self):
-        return self.num_of_places - len(self.passengers.all())
 
     def __str__(self):
         return f'Start City: {self.start_city} | End City: {self.end_city} | {self.driver}'
